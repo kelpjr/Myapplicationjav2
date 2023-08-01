@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/findPedFrag"
+        android:icon="@drawable/baseline_directions_walk_24"
+        android:title="Find Pedestrains" />
+
+    <item
+        android:id="@+id/addDataFrag"
+        android:icon="@drawable/baseline_add_to_photos_24"
+        android:title="Add Data" />
+
+    <item
+        android:id="@+id/findDocFrag"
+        android:icon="@drawable/baseline_search_24"
+        android:title="Find Documents" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Settings" />
+
+</menu>
