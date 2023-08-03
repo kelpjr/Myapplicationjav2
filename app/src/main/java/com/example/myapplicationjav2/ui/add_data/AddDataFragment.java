@@ -36,7 +36,7 @@ public class AddDataFragment extends Fragment {
         binding = FragmentAddDataBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textAddData;
+        final TextView textView = binding.textAddDataStatus;
 
         Button selDir = (Button) root.findViewById(R.id.button_sel_dir);
         selDir.setOnClickListener(new View.OnClickListener(){

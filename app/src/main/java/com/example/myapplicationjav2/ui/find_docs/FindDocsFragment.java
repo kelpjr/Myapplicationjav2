@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.devlomi.record_view.RecordButton;
+import com.devlomi.record_view.RecordView;
+import com.example.myapplicationjav2.R;
 import com.example.myapplicationjav2.databinding.FragmentFindDocsBinding;
 
 public class FindDocsFragment extends Fragment {
@@ -26,7 +29,17 @@ public class FindDocsFragment extends Fragment {
 
         final TextView textView = binding.textFindDocs;
         findDocsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        initAudioRec(root);
+
         return root;
+    }
+
+    public void initAudioRec(View root){
+        RecordView recordView = (RecordView) root.findViewById(R.id.record_view_docs);
+        RecordButton recordButton = (RecordButton) root.findViewById(R.id.record_button_docs);
+        recordButton.setRecordView(recordView);
+
     }
 
     @Override

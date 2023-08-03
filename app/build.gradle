@@ -54,4 +54,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     implementation 'com.google.android.material:material:1.1.0'
+    //for AndroidX use:
+    implementation 'com.github.3llomi:RecordView:3.1.3'
 }
