@@ -10,8 +10,13 @@ public class AddDataViewModel extends ViewModel {
 
     public AddDataViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("Please select file/directory...");
     }
+
+    public void setMText(String text){
+        mText.setValue(text);
+    }
+
 
     public LiveData<String> getText() {
         return mText;

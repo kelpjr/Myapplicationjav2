@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/findPedFrag"
-        android:icon="@drawable/baseline_directions_walk_24"
-        android:title="Find Pedestrains" />
-
-    <item
         android:id="@+id/addDataFrag"
         android:icon="@drawable/baseline_add_to_photos_24"
         android:title="Add Data" />
+
+    <item
+        android:id="@+id/findPedFrag"
+        android:icon="@drawable/baseline_directions_walk_24"
+        android:title="Find Pedestrains" />
 
     <item
         android:id="@+id/findDocFrag"

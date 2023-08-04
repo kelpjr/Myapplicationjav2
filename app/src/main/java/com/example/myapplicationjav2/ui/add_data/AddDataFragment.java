@@ -27,17 +27,23 @@ import com.example.myapplicationjav2.databinding.FragmentAddDataBinding;
 public class AddDataFragment extends Fragment {
 
     private FragmentAddDataBinding binding;
-
+    private AddDataViewModel addDataViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AddDataViewModel addDataViewModel =
-                new ViewModelProvider(this).get(AddDataViewModel.class);
+
 
         binding = FragmentAddDataBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textAddDataStatus;
+        addDataViewModel = new ViewModelProvider(this).get(AddDataViewModel.class);
+        addDataViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        buttonInit(root);
+        return root;
+    }
 
+
+    public void buttonInit(View root){
         Button selDir = (Button) root.findViewById(R.id.button_sel_dir);
         selDir.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
@@ -53,30 +59,35 @@ public class AddDataFragment extends Fragment {
                 openFileChooser();
             }
         });
-        addDataViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
 
+    }
     public void openFileChooser(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         selFileActivityLauncher.launch(intent);
     }
-
     ActivityResultLauncher<Intent> selFileActivityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if(result.getResultCode() == Activity.RESULT_OK){
                     Intent data = result.getData();
-                    if(data == null){
-                        Toast.makeText(getActivity(),"Data is null",Toast.LENGTH_LONG).show();
-                        return;
+                    if(data.getClipData() != null){
+                        int count = data.getClipData().getItemCount();
+                        addDataViewModel.setMText(Integer.toString(count) + " files selected!");
+                    }else if(data != null){
+                        Uri uri = data.getData();
+
+                        addDataViewModel.setMText("1 file selected!");
+//                    Toast.makeText(getActivity(),uri.getPath(),Toast.LENGTH_LONG).show();
                     }
-                    Uri uri = data.getData();
-                    Toast.makeText(getActivity(),uri.getPath(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Data is null",Toast.LENGTH_LONG).show();
                 }
             }
+
     );
+
+
 
     public void openFolderChooser(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
