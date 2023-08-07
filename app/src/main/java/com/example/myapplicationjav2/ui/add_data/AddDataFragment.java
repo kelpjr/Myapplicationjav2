@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -23,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplicationjav2.R;
 import com.example.myapplicationjav2.databinding.FragmentAddDataBinding;
+import com.example.myapplicationjav2.services.RetrofitClient;
 
 public class AddDataFragment extends Fragment {
 
@@ -110,6 +108,13 @@ public class AddDataFragment extends Fragment {
                 }
             }
     );
+
+    private void uploadVid(Uri fileUri){
+        RetrofitClient client =
+        Call<List<VideoDataModel>> call = RetrofitClient.getInstance()
+                .getAPIs()
+                .getVideo()
+    }
 
 
 
