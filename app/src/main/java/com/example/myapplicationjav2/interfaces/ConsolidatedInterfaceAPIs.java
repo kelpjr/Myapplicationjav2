@@ -52,19 +52,6 @@ public interface ConsolidatedInterfaceAPIs {
             @Query("temperature") String temperature);
 
 
-//    /api/select_qa_list
-//
-//    Description:
-//    Fetches the info of a specified document search entry
-//    Parameters:
-//    idx:<text>Search entry index
-//    Return:
-//      <page content>,
-//      <source>,
-//      <page number>,
-//      <summary of document>,
-//      <evaluation of relevance to query>
-//
     @GET("select_qa_list")
     Call<List<PAR>> select_qa_list(@Query("idx") String idx);
 
@@ -74,6 +61,11 @@ public interface ConsolidatedInterfaceAPIs {
     @DELETE("clearVectorDb")
     Call<List<PAR>> clearVectorDb();
 
+
+// TODO:
+//    get the file uploading and voice recording to work properly. (done)
+//    also add in the various ui elements to make it look as close to the fully working thing as possible (sort of)
+//    make it so that text would appear when using voice as input. (tbd)
 
 
 //    public static String domainName;

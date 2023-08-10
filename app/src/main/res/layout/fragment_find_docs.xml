@@ -7,11 +7,16 @@
     tools:context=".ui.find_docs.FindDocsFragment">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="665dp"
         android:layout_marginBottom="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
 
         <com.devlomi.record_view.RecordView
             android:id="@+id/record_view_docs"
@@ -50,20 +55,122 @@
 
         <TextView
             android:id="@+id/text_find_docs"
-            android:layout_width="match_parent"
+            android:layout_width="219dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/record_view_docs"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="355dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="240dp"
-            android:textAlignment="center"
+            android:layout_marginTop="413dp"
+            android:layout_marginEnd="31dp"
+            android:layout_marginBottom="182dp"
+            android:layout_toStartOf="@+id/relativeLayout"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="NotSibling"
+            android:text="Answer:"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/record_view_docs"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="258dp"
+            android:layout_marginTop="428dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="14dp">
+
+            <Button
+                android:id="@+id/btnClearText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="16dp"
+                android:text="Clear Text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="374dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="-1dp"
+            android:background="@drawable/border">
+
+            <TableRow android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="103dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="1" />
+
+                <TextView
+                    android:layout_width="103dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="2" />
+
+                <TextView
+                    android:layout_width="103dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="3" />
+
+                <TextView
+                    android:layout_width="103dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="4" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:padding="3dip"
+                    android:text="" />
+
+                <TextView
+                    android:gravity="right"
+                    android:padding="3dip"
+                    android:text="" />
+
+                <TextView
+                    android:gravity="right"
+                    android:padding="3dip"
+                    android:text="" />
+
+                <TextView
+                    android:gravity="right"
+                    android:padding="3dip"
+                    android:text="" />
+
+            </TableRow>
+        </TableLayout>
+
     </RelativeLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
