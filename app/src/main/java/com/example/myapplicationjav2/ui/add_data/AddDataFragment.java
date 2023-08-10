@@ -109,12 +109,12 @@ public class AddDataFragment extends Fragment {
             }
     );
 
-    private void uploadVid(Uri fileUri){
-        RetrofitClient client =
-        Call<List<VideoDataModel>> call = RetrofitClient.getInstance()
-                .getAPIs()
-                .getVideo()
-    }
+//    private void uploadVid(Uri fileUri){
+//        RetrofitClient client =
+//        Call<List<VideoDataModel>> call = RetrofitClient.getInstance()
+//                .getAPIs()
+//                .getVideo()
+//    }
 
 
 

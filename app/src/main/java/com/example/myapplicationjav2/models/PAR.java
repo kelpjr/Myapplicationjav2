@@ -1,9 +1,9 @@
-package com.example.myapplicationjav2;
+package com.example.myapplicationjav2.models;
 
 import java.net.URI;
 import java.util.ArrayList;
 
-public class Video {
+public class PAR {
     public String getId() {
         return id;
     }
@@ -161,7 +161,7 @@ public class Video {
     private URI motion_event;
     private ArrayList colors;
 
-    public Video(String id, String caption, String time_stamp, String gender, int age, String spatial_orientation, boolean glasses_boolean, boolean hat_boolean, Object holding_objects, Object bag_type, Object upper_attire, Object lower_attire, boolean boots_boolean, URI motion_event, ArrayList colors) {
+    public PAR(String id, String caption, String time_stamp, String gender, int age, String spatial_orientation, boolean glasses_boolean, boolean hat_boolean, Object holding_objects, Object bag_type, Object upper_attire, Object lower_attire, boolean boots_boolean, URI motion_event, ArrayList colors) {
         this.id = id;
         this.caption = caption;
         this.time_stamp = time_stamp;

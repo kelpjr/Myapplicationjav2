@@ -1,5 +1,7 @@
 package com.example.myapplicationjav2.services;
 
+import com.example.myapplicationjav2.interfaces.ConsolidatedInterfaceAPIs;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
