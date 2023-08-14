@@ -1,8 +1,10 @@
 package com.example.myapplicationjav2.ui.add_data;
 
+import static com.example.myapplicationjav2.helpers.HelperMethods.createCopyAndReturnRealPath;
+import static com.example.myapplicationjav2.helpers.HelperMethods.getMimeType;
+
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,11 +29,8 @@ import com.example.myapplicationjav2.services.FileUploadService;
 import com.example.myapplicationjav2.services.ServiceGenerator;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -83,120 +81,124 @@ public class AddDataFragment extends Fragment {
         Button upFile = (Button) root.findViewById(R.id.button_upload_files);
         upFile.setOnClickListener(new View.OnClickListener() {
             @Override
+//            public void onClick(View view) {
+//                uploadFile(data);
+//
+//            }
             public void onClick(View view) {
-                uploadFile(data);
+                uploadMultiFile(data);
+            }
+
+        });
+
+    }
+
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        File file = new File(createCopyAndReturnRealPath(getActivity(), fileUri));
+        String filetype = getMimeType(file);
+
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(filetype),
+                        file
+                );
+
+        // MultipartBody.Part is used to send also the actual file name
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
+
+    private void uploadFile(Intent data) {
+        File file = new File(createCopyAndReturnRealPath(getActivity(), data.getData()));
+
+        // Create a request body for the text file
+        String filetype = getMimeType(file);
+        RequestBody fileRequestBody = RequestBody.create(MediaType.parse(filetype), file);
+
+
+        // Create a MultipartBody.Part instance representing the file part
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileRequestBody);
+
+        // Create the Retrofit service interface
+        FileUploadService service =
+                ServiceGenerator.createService(FileUploadService.class);
+
+        // Make the API call to upload the file
+        Call<ResponseBody> call = service.upload(filePart);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    // File upload successful
+                    Log.d("upload stats", "File uploaded successfully");
+                } else {
+                    // File upload failed
+                    Log.e("upload stats", "File upload failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Handle failure
+                Log.e("upload stats", "File upload failed: " + t.getMessage());
             }
         });
 
     }
 
-    private void uploadFile(Intent data) {
-        // create upload service client
-        FileUploadService service =
-                ServiceGenerator.createService(FileUploadService.class);
+    private void uploadMultiFile(Intent data) {
+        ClipData clipData = data.getClipData();
+        if (clipData != null) {
+            int itemCount = clipData.getItemCount();
 
-        ArrayList<Uri> fileList = new ArrayList<Uri>();
-        if(data != null && data.getClipData() != null){
-            for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                fileList.add(data.getClipData().getItemAt(i).getUri());
-                File file = new File(createCopyAndReturnRealPath(getActivity(), fileList.get(i)));
-                RequestBody requestFile =
-                        RequestBody.create(
-                                MediaType.parse(getActivity().getContentResolver().getType(fileList.get(i))),
-                                file
-                        );
+            // Create a list to store the MultipartBody.Part instances
+            List<MultipartBody.Part> parts = new ArrayList<>();
 
-                // MultipartBody.Part is used to send also the actual file name
-                MultipartBody.Part body =
-                        MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+            for (int i = 0; i < itemCount; i++) {
+                Uri uri = clipData.getItemAt(i).getUri();
 
-                // add another part within the multipart request
-                String descriptionString = "hello, this is description speaking";
-                RequestBody description =
-                        RequestBody.create(
-                                okhttp3.MultipartBody.FORM, descriptionString);
+                // Create a file object from the Uri
+                File file = new File(createCopyAndReturnRealPath(getActivity(), uri));
 
-                // finally, execute the request
-                Call<ResponseBody> call = service.upload(description, body);
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call,
-                                           Response<ResponseBody> response) {
-                        Log.v("Upload LOGGING", "success");
-                    }
+                // Create a request body for the file
+                String fileType = getMimeType(file);
+                RequestBody fileRequestBody = RequestBody.create(MediaType.parse(fileType), file);
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("Upload error:", t.getMessage());
-                    }
-                });
+                // Create a MultipartBody.Part instance representing the file part
+                MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileRequestBody);
+
+                // Add the file part to the list of parts
+                parts.add(filePart);
             }
-        }else{
-                File file = new File(createCopyAndReturnRealPath(getActivity(), data.getData()));
-                RequestBody requestFile =
-                        RequestBody.create(
-                                MediaType.parse(getActivity().getContentResolver().getType(data.getData())),
-                                file
-                        );
 
-                // MultipartBody.Part is used to send also the actual file name
-                MultipartBody.Part body =
-                        MultipartBody.Part.createFormData("", file.getName(), requestFile);
+            // Create the Retrofit service interface
+            FileUploadService service = ServiceGenerator.createService(FileUploadService.class);
 
-                // add another part within the multipart request
-                String descriptionString = "";
-                RequestBody description =
-                        RequestBody.create(
-                                okhttp3.MultipartBody.FORM, descriptionString);
-
-                // finally, execute the request
-                Call<ResponseBody> call = service.upload(description, body);
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call,
-                                           Response<ResponseBody> response) {
-                        Log.v("Upload LOGGING", "success");
+            // Make the API call to upload the files
+            Call<ResponseBody> call = service.uploadTestm(parts);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        // Files upload successful
+                        Log.d("upload stats", "Files uploaded successfully");
+                    } else {
+                        // Files upload failed
+                        Log.e("upload stats", "Files upload failed: " + response.message());
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("Upload error:", t.getMessage());
-                    }
-                });
-
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    // Handle failure
+                    Log.e("upload stats", "Files upload failed: " + t.getMessage());
+                }
+            });
         }
     }
-    @Nullable
-    public static String createCopyAndReturnRealPath(
-            @NonNull Context context, @NonNull Uri uri) {
-        final ContentResolver contentResolver = context.getContentResolver();
-        if (contentResolver == null)
-            return null;
 
-        // Create file path inside app's data dir
-        String filePath = context.getApplicationInfo().dataDir + File.separator
-                + System.currentTimeMillis();
-
-        File file = new File(filePath);
-        try {
-            InputStream inputStream = contentResolver.openInputStream(uri);
-            if (inputStream == null)
-                return null;
-
-            OutputStream outputStream = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0)
-                outputStream.write(buf, 0, len);
-
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException ignore) {
-            return null;
-        }
-
-        return file.getAbsolutePath();
-    }
 
     public void openFileChooser(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -215,6 +217,10 @@ public class AddDataFragment extends Fragment {
                     if(data.getClipData() != null){
                         int count = data.getClipData().getItemCount();
                         addDataViewModel.setMText(Integer.toString(count) + " files selected!");
+                        for (int i = 0; i < count; i++) {
+                            Log.e("FILE ", data.getClipData().getItemAt(i).getUri().toString());
+
+                        }
                     }else if(data != null){
                         Uri uri = data.getData();
 
@@ -230,7 +236,10 @@ public class AddDataFragment extends Fragment {
     );
 
 
-
+    // TODO: 14/8/23:
+    // upload from selected folder
+    // prevent a crash when no files or folder is selected
+    // add a loading so that the user is aware of it.
     public void openFolderChooser(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         selDirActivityResultLauncher.launch(intent);
