@@ -13,8 +13,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-//    private static final String BASE_URL = "http://11.0.0.2:5000/api/";
-    private static final String BASE_URL = "http://10.10.8.79:6000/api/";
+    private static final String SERVER_IP = "11.0.0.5";
+    private static final String BASE_URL = "http://"+SERVER_IP+":5000/api/";
+//    private static final String BASE_URL = "http://10.10.8.79:6000/api/";
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()

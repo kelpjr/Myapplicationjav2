@@ -32,7 +32,7 @@
             app:slide_to_cancel_text="Slide To Cancel">
 
             <EditText
-                android:id="@+id/editText_SQLQuery"
+                android:id="@+id/editText_SQLQuery_ped"
                 android:layout_width="361dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"

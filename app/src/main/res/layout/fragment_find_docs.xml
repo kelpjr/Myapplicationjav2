@@ -13,9 +13,10 @@
         android:layout_marginBottom="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
 
         <com.devlomi.record_view.RecordView
@@ -29,10 +30,10 @@
             app:slide_to_cancel_arrow_color="#000000"
             app:slide_to_cancel_bounds="8dp"
             app:slide_to_cancel_margin_right="10dp"
-            app:slide_to_cancel_text="Slide To Cancel" >
+            app:slide_to_cancel_text="Slide To Cancel">
 
             <EditText
-                android:id="@+id/editText_SQLQuery"
+                android:id="@+id/editText_SQLQuery_doc"
                 android:layout_width="361dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
@@ -66,11 +67,11 @@
             android:layout_marginEnd="31dp"
             android:layout_marginBottom="182dp"
             android:layout_toStartOf="@+id/relativeLayout"
+            android:text="Answer:"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="NotSibling"
-            android:text="Answer:"/>
+            tools:ignore="NotSibling" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -99,78 +100,82 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="374dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="23dp"
-            android:layout_marginEnd="-1dp"
-            android:background="@drawable/border">
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"></TableLayout>
 
-            <TableRow android:background="@drawable/border">
+        <!--        <TableLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="374dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_marginStart="0dp"-->
+        <!--            android:layout_marginTop="23dp"-->
+        <!--            android:layout_marginEnd="-1dp"-->
+        <!--            android:background="@drawable/border">-->
 
-                <TextView
-                    android:layout_width="103dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="1" />
+        <!--            <TableRow android:background="@drawable/border">-->
 
-                <TextView
-                    android:layout_width="103dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="2" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="103dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:background="@drawable/border"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="1" />-->
 
-                <TextView
-                    android:layout_width="103dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="3" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="103dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:background="@drawable/border"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="2" />-->
 
-                <TextView
-                    android:layout_width="103dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="4" />
-            </TableRow>
+        <!--                <TextView-->
+        <!--                    android:layout_width="103dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:background="@drawable/border"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="3" />-->
 
-            <TableRow>
+        <!--                <TextView-->
+        <!--                    android:layout_width="103dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:background="@drawable/border"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="4" />-->
+        <!--            </TableRow>-->
 
-                <TextView
-                    android:padding="3dip"
-                    android:text="" />
+        <!--            <TableRow>-->
 
-                <TextView
-                    android:gravity="right"
-                    android:padding="3dip"
-                    android:text="" />
+        <!--                <TextView-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="" />-->
 
-                <TextView
-                    android:gravity="right"
-                    android:padding="3dip"
-                    android:text="" />
+        <!--                <TextView-->
+        <!--                    android:gravity="right"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="" />-->
 
-                <TextView
-                    android:gravity="right"
-                    android:padding="3dip"
-                    android:text="" />
+        <!--                <TextView-->
+        <!--                    android:gravity="right"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="" />-->
 
-            </TableRow>
-        </TableLayout>
+        <!--                <TextView-->
+        <!--                    android:gravity="right"-->
+        <!--                    android:padding="3dip"-->
+        <!--                    android:text="" />-->
+
+        <!--            </TableRow>-->
+        <!--        </TableLayout>-->
 
     </RelativeLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

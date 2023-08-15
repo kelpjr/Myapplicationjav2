@@ -24,7 +24,7 @@ public class HelperMethods {
             type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
         }
         if (type == null) {
-            type = "image/*"; // fallback type. You might set it to */*
+            type = "*/*"; // fallback type. You might set it to */*
         }
         return type;
     }

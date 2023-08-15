@@ -126,7 +126,7 @@ public class AddDataFragment extends Fragment {
                 ServiceGenerator.createService(FileUploadService.class);
 
         // Make the API call to upload the file
-        Call<ResponseBody> call = service.upload(filePart);
+        Call<ResponseBody> call = service.uploadDoc(filePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -150,6 +150,7 @@ public class AddDataFragment extends Fragment {
 
     private void uploadMultiFile(Intent data) {
         ClipData clipData = data.getClipData();
+        String fileType = "";
         if (clipData != null) {
             int itemCount = clipData.getItemCount();
 
@@ -163,7 +164,7 @@ public class AddDataFragment extends Fragment {
                 File file = new File(createCopyAndReturnRealPath(getActivity(), uri));
 
                 // Create a request body for the file
-                String fileType = getMimeType(file);
+                fileType = getMimeType(file);
                 RequestBody fileRequestBody = RequestBody.create(MediaType.parse(fileType), file);
 
                 // Create a MultipartBody.Part instance representing the file part
@@ -177,7 +178,12 @@ public class AddDataFragment extends Fragment {
             FileUploadService service = ServiceGenerator.createService(FileUploadService.class);
 
             // Make the API call to upload the files
-            Call<ResponseBody> call = service.uploadTestm(parts);
+            Call<ResponseBody> call;
+            if(fileType.contains("video")){
+                call = service.uploadMultiVid(parts);
+            }else {
+                call = service.uploadMultiDoc(parts);
+            }
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -240,6 +246,7 @@ public class AddDataFragment extends Fragment {
     // upload from selected folder
     // prevent a crash when no files or folder is selected
     // add a loading so that the user is aware of it.
+    //potentially make the whole table into a listview where attributed will be shown when tapped on
     public void openFolderChooser(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         selDirActivityResultLauncher.launch(intent);
@@ -261,16 +268,6 @@ public class AddDataFragment extends Fragment {
                 }
             }
     );
-
-//    private void uploadVid(Uri fileUri){
-//        RetrofitClient client =
-//        Call<List<VideoDataModel>> call = RetrofitClient.getInstance()
-//                .getAPIs()
-//                .getVideo()
-//    }
-
-
-
 
     @Override
     public void onDestroyView() {

@@ -28,7 +28,6 @@ import com.example.myapplicationjav2.R;
 import com.example.myapplicationjav2.databinding.FragmentFindPedestriansBinding;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 
 public class FindPedFragment extends Fragment {
@@ -58,7 +57,7 @@ public class FindPedFragment extends Fragment {
 
     public void initEditText(View root){
         RecordButton recordButton = (RecordButton) root.findViewById(R.id.record_button);
-        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery);
+        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery_ped);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -103,7 +102,7 @@ public class FindPedFragment extends Fragment {
         recordButton.setRecordView(recordView);
         recordView.setCancelBounds(0);//dp
 
-        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery);
+        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery_ped);
 
 
         recordView.setOnRecordListener(new OnRecordListener() {
