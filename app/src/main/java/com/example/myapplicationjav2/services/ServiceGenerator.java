@@ -13,14 +13,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    private static final String SERVER_IP = "11.0.0.5";
+    private static final String SERVER_IP = "11.0.0.2";
     private static final String BASE_URL = "http://"+SERVER_IP+":5000/api/";
 //    private static final String BASE_URL = "http://10.10.8.79:6000/api/";
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
+                    .addConverterFactory(GsonConverterFactory.create())
+//                    .addConverterFactory(MoshiConverterFactory.create())
+            ;
 
     private static Retrofit retrofit = builder.build();
 
@@ -48,7 +50,6 @@ public class ServiceGenerator {
 
                 // Request customization: add request headers
                 Request.Builder requestBuilder = original.newBuilder();
-//                        .header("Content-Type", "multipart/form-data"); // <-- this is the important line
 
                 Request request = requestBuilder.build();
                 return chain.proceed(request);

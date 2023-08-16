@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,15 +32,16 @@ import com.devlomi.record_view.RecordButton;
 import com.devlomi.record_view.RecordView;
 import com.example.myapplicationjav2.R;
 import com.example.myapplicationjav2.databinding.FragmentFindDocsBinding;
-import com.example.myapplicationjav2.models.Document;
+import com.example.myapplicationjav2.models.DocResults;
 import com.example.myapplicationjav2.services.DocumentService;
 import com.example.myapplicationjav2.services.ServiceGenerator;
 
 import java.io.IOException;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FindDocsFragment extends Fragment {
 
@@ -90,7 +90,7 @@ public class FindDocsFragment extends Fragment {
     }
 
     private void populateTable(View root, List<List<String>> tableData) {
-        TableLayout tableLayout = root.findViewById(R.id.tableLayout);
+//        TableLayout tableLayout = root.findViewById(R.id.);
 
         for (List<String> rowData : tableData) {
             TableRow tableRow = new TableRow(getContext());
@@ -108,7 +108,7 @@ public class FindDocsFragment extends Fragment {
                 tableRow.addView(textView);
             }
 
-            tableLayout.addView(tableRow);
+//            tableLayout.addView(tableRow);
         }
     }
 
@@ -129,8 +129,8 @@ public class FindDocsFragment extends Fragment {
 
 
     public void initEditText(View root){
-        RecordButton recordButton = (RecordButton) root.findViewById(R.id.record_button);
-        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery_doc);
+        RecordButton recordButton = (RecordButton) root.findViewById(R.id.record_button_docs);
+        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -154,14 +154,7 @@ public class FindDocsFragment extends Fragment {
                         public void onClick(View v) {
                             Toast.makeText(getActivity(), "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
                             Log.d("RecordButton","RECORD BUTTON CLICKED");
-                            DocumentService service = ServiceGenerator.createService(DocumentService.class);
-                            String query = editText.getText().toString();
-                            String mode = "";
-                            String k = "";
-                            String temp = "";
-                            // TODO: 15/8/2023
-                            //add a settings feature to rmb all the mode and k. just set default values for now.
-                            Call<List<Document>> call = service.qa_query(query,mode,k,temp);
+                            pingServer(editText);
                         }
                     });
                     recordButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(),com.devlomi.record_view.R.drawable.recv_ic_send,null));
@@ -177,13 +170,15 @@ public class FindDocsFragment extends Fragment {
     }
 
 
+
+
     public void initAudioRec(View root){
         RecordView recordView = (RecordView) root.findViewById(R.id.record_view_docs);
         RecordButton recordButton = (RecordButton) root.findViewById(R.id.record_button_docs);
         recordButton.setRecordView(recordView);
         recordView.setCancelBounds(0);//dp
 
-        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery_doc);
+        EditText editText = (EditText) root.findViewById(R.id.editText_SQLQuery);
 
 
         recordView.setOnRecordListener(new OnRecordListener() {
@@ -249,6 +244,38 @@ public class FindDocsFragment extends Fragment {
             }
         });
 
+    }
+
+
+    private void pingServer(EditText editText){
+        DocumentService service = ServiceGenerator.createService(DocumentService.class);
+        String query = editText.getText().toString();
+        String mode = "Auto";
+        String k = "3";
+        String temp = "0";
+        // TODO: 15/8/2023
+        //add a settings feature to rmb all the mode and k. just set default values for now.
+        Call<List<DocResults>> call = service.qa_query(query,mode,k,temp);
+        call.enqueue(new Callback<List<DocResults>>(){
+
+            @Override
+            public void onResponse(Call<List<DocResults>> call, Response<List<DocResults>> response) {
+                if (response.isSuccessful()) {
+                    // Files upload successful
+                    List<DocResults> docResults = response.body();
+                    Log.e("Response", "IHDOIWSDFHWHDFWE");
+                }else {
+                    Log.e("ResponseFAILED", "ocResults.getClass().getName()");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DocResults>> call, Throwable t) {
+                Log.e("upload stats", "File upload failed: " + t.getMessage());
+
+            }
+        });
     }
 
     @Override
